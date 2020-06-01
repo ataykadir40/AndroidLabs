@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="30dp"
+        android:text="@string/Textsize"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/Textview"
+        />
+    <Button
+        android:layout_below="@+id/Textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text"
+        android:layout_toLeftOf="@+id/checkbox"
+        android:id="@+id/Button1"
+        >
+    </Button>
+
+    <CheckBox
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/toast_message"
+        android:layout_below="@+id/Textview"
+        android:layout_toEndOf="@id/Image1"
+        android:id="@+id/checkbox" />
+
+    <ImageButton
+        android:id="@+id/Image1"
+        android:layout_below="@+id/Button1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/flag" />
+
+    <Switch
+        android:id="@+id/Switch"
+        android:layout_below="@+id/Button1"
+        android:layout_toRightOf="@+id/Image1"
+        android:layout_gravity="fill_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Switch on / off" />
+
+    <EditText
+        android:layout_below="@id/Image1"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="Type here"
+        android:inputType="textPersonName" />
+
+</RelativeLayout>

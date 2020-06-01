@@ -1,5 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Android Labs</string>
     <string name="hello_message">Hello!</string>
     <string name="ButtonText">I\’m a button</string>
+    <string name="toast_message">Check this out!</string>
+    <string name="hint">The switch is now on</string>
+    <string name="text">CLICK HERE</string>
+    <string name="EditText">Type here</string>
+    <string name="Textsize">Look at my GUI</string>
+    <string name="radio">Switch on / off</string>
+    <string name="message">The switch is now on</string>
+    <string name="switchMsg">The switch is now</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
+    <string name="undo">undo</string>
 </resources>

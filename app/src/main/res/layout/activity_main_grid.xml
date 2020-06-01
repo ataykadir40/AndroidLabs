@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="4"
+    android:columnCount="2">
+
+    <TextView
+        android:layout_columnSpan="2"
+        android:text="@string/Textsize"
+        android:textSize="30dp" />
+
+    <Button
+        android:layout_gravity="fill"
+        android:text="@string/text"
+        android:id="@+id/Button1"
+        />
+
+    <CheckBox
+        android:text="@string/toast_message"
+        android:id="@+id/checkbox" />
+
+    <ImageButton
+        android:src="@drawable/flag"></ImageButton>
+
+        <Switch
+            android:id="@+id/Switch"
+            android:layout_gravity="fill_horizontal"
+            android:text="Switch on / off"
+            ></Switch>
+
+    <EditText
+        android:id="@+id/Text"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill_horizontal"
+        android:inputType="textPersonName"
+        android:text="@string/EditText"></EditText>
+
+</GridLayout>

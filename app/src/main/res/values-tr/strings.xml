@@ -3,4 +3,15 @@
     <string name="app_name">Android Labs</string>
     <string name="hello_message">Merhaba!</string>
     <string name="ButtonText">Ben dugmeyim</string>
+    <string name="toast_message">Bunu kontrol edin!</string>
+    <string name="hint">Anahtar simdi acik</string>
+    <string name="text">BURAYA TIKLA</string>
+    <string name="EditText">Buraya yazin</string>
+    <string name="Textsize">Grafik kullanici arayuzune bak</string>
+    <string name="radio">ac / kapa</string>
+    <string name="message">Anahtar simdi acik</string>
+    <string name="switchMsg">Anahtar simdi</string>
+    <string name="on">acik</string>
+    <string name="off">kapali</string>
+    <string name="undo">Geri al</string>
 </resources>
