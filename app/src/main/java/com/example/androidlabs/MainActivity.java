@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_linear);
+        setContentView(R.layout.activity_main_grid);
 
         Button text = findViewById(R.id.Button1);
         text.setOnClickListener(e -> Toast.makeText(this, getResources().getString(R.string.message) , Toast.LENGTH_LONG).show());
