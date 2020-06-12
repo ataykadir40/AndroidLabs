@@ -14,4 +14,20 @@
     <string name="on">on</string>
     <string name="off">off</string>
     <string name="undo">undo</string>
+
+    <string name="TextView1">Enter your email address:</string>
+    <string name="hint1">Type email here</string>
+    <string name="TextView2">Type your password:</string>
+    <string name="text1">LOGIN</string>
+
+
+    <string name="TextView4">Your profile</string>
+    <string name="TextView5">Your name:</string>
+    <string name="hint2">Enter your name</string>
+    <string name="TextView6">Your email:</string>
+    <string name="hint3">Enter your email</string>
+    <string name="TextView7">Your picture:</string>
+    <string name="TextView8">Click the button above to take a picture</string>
+
+
 </resources>

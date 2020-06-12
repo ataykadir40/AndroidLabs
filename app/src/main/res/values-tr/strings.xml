@@ -14,4 +14,18 @@
     <string name="on">acik</string>
     <string name="off">kapali</string>
     <string name="undo">Geri al</string>
+
+    <string name="TextView1">E-posta adresinizi giriniz:</string>
+    <string name="hint1">E-postayi buraya yazin</string>
+    <string name="TextView2">Sifrenizi yaziniz</string>
+    <string name="text1">OTURUM AC</string>
+
+
+    <string name="TextView4">Senin profilin</string>
+    <string name="TextView5">Senin adin:</string>
+    <string name="hint2">Adinizi giriniz</string>
+    <string name="TextView6">E-posta adresiniz:</string>
+    <string name="hint3">E-postanizi giriniz</string>
+    <string name="TextView7">Senin resmin:</string>
+    <string name="TextView8">Fotograf cekmek icin yukaridaki dugmeyi tiklayin</string>
 </resources>

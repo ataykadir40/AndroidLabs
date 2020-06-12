@@ -1,41 +1,50 @@
 package com.example.androidlabs;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
+   // EditText typeField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_relative);
+        setContentView(R.layout.activity_main_lab3);
+        EditText typeField = findViewById(R.id.Text1);
+        SharedPreferences prefs = getSharedPreferences("FileName", Context.MODE_PRIVATE);
+        String savedString = prefs.getString("ReserveName", "");
+        typeField.setText(savedString);
+        Button ex = findViewById(R.id.Button);
 
-        Button text = findViewById(R.id.Button1);
-        text.setOnClickListener(e -> Toast.makeText(this, getResources().getString(R.string.message) , Toast.LENGTH_LONG).show());
-
-        String switchMessage = getResources().getString(R.string.switchMsg);
-        String on = getResources().getString(R.string.on);
-        String off = getResources().getString(R.string.off);
-
-        CheckBox box = findViewById(R.id.checkbox);
-        box.setOnCheckedChangeListener((CompoundButton cb, boolean b) ->{
-            Snackbar snack = Snackbar.make(cb, switchMessage + " " + (b ? on : off) , Snackbar.LENGTH_LONG);
-            snack.setAction( getResources().getString(R.string.undo), click -> cb.setChecked(!b));
-            snack.show();
-        });
-
-        Switch s =  findViewById(R.id.Switch);
-        s.setOnCheckedChangeListener((CompoundButton cb, boolean b) ->{
-            Snackbar snack = Snackbar.make(cb, switchMessage + " " + (b ? on : off) , Snackbar.LENGTH_LONG);
-            snack.setAction( getResources().getString(R.string.undo), click -> cb.setChecked(!b));
-            snack.show();
+        ex.setOnClickListener(bt -> {
+            Intent goToProfile = new Intent(MainActivity.this, ProfileActivity.class);
+            goToProfile.putExtra("EMAIL",  typeField.getText().toString());
+            startActivity(goToProfile);
         });
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences prefs = getSharedPreferences("FileName", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        EditText typeField1 = findViewById(R.id.Text1);
+        editor.putString("ReserveName", typeField1.getText().toString()); //key  //putInt(String key, int variable)  putFloat(key, float)
+        editor.commit();
+    }
 }
+
+
+
