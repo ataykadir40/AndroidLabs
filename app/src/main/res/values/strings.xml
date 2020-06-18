@@ -29,5 +29,9 @@
     <string name="TextView7">Your picture:</string>
     <string name="TextView8">Click the button above to take a picture</string>
 
+    <string name="text10">Go to chat</string>
+    <string name="text12">SEND</string>
+    <string name="text13">RECEIVE</string>
+    <string name="hint4">Type here</string>
 
 </resources>

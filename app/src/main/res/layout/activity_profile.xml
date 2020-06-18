@@ -64,4 +64,11 @@
         android:text="@string/TextView8"
         />
 
+    <Button
+        android:id="@+id/Button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text10"
+        ></Button>
+
 </LinearLayout>

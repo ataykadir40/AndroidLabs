@@ -28,4 +28,9 @@
     <string name="hint3">E-postanizi giriniz</string>
     <string name="TextView7">Senin resmin:</string>
     <string name="TextView8">Fotograf cekmek icin yukaridaki dugmeyi tiklayin</string>
+
+    <string name="text10">Sohbete git</string>
+    <string name="text12">GÖNDER</string>
+    <string name="text13">TESLİM AL</string>
+    <string name="hint4">Buraya yazın</string>
 </resources>

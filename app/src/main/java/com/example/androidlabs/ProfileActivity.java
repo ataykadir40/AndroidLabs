@@ -32,6 +32,12 @@ public class ProfileActivity extends AppCompatActivity {
         EditText typeField = findViewById(R.id.text2);
         typeField.setText(s);
 
+        Button ex = findViewById(R.id.Button2);
+        ex.setOnClickListener(bt -> {
+            Intent goToChat = new Intent(ProfileActivity.this, ChatRoomActivity.class);
+            startActivity(goToChat);
+        });
+
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
