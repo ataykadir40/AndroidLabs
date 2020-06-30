@@ -4,7 +4,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     ArrayList<Message> list = new ArrayList<>();
     private MyListAdapter myAdapter=new MyListAdapter();
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,26 +33,69 @@ public class ChatRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_room);
 
         ListView myList = findViewById(R.id.theListView);
+        loadDataFromDatabase();
         myList.setAdapter(myAdapter);
 
         Button addButton = findViewById(R.id.addButton3);
         addButton.setOnClickListener( click -> {
+
             EditText typeField = findViewById(R.id.text11);
-            Message msg = new Message(typeField.getText().toString(), "send");
+
+            String message = typeField.getText().toString();
+
+            //add to the database and get the new ID
+            ContentValues newRowValues = new ContentValues();
+
+            //Now provide a value for every database column defined in MyOpener.java:
+            //put string name in the NAME column:
+            newRowValues.put(MyOpener.MESSAGE, message);
+            //put string email in the EMAIL column:
+            newRowValues.put(MyOpener.ISSENT, true);
+
+            newRowValues.put(MyOpener.ISRECEIVED, false);
+
+            //Now insert in the database:
+            long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
+
+            Message msg = new Message(message, newId, true, false);
             list.add(msg);
             typeField.setText(null);
             myAdapter.notifyDataSetChanged();
             //myList.setAdapter(new MyListAdapter());
+
+            //Show the id of the inserted item:
+            Toast.makeText(this, "Inserted item id:"+newId, Toast.LENGTH_LONG).show();
         });
 
         Button addButtonnew = findViewById(R.id.addButton4);
         addButtonnew.setOnClickListener( click -> {
             EditText typeField = findViewById(R.id.text11);
-            Message msg = new Message(typeField.getText().toString(), "receive");
+
+            String message = typeField.getText().toString();
+
+            //add to the database and get the new ID
+            ContentValues newRowValues = new ContentValues();
+
+            //Now provide a value for every database column defined in MyOpener.java:
+            //put string name in the NAME column:
+            newRowValues.put(MyOpener.MESSAGE, message);
+            //put string email in the EMAIL column:
+            newRowValues.put(MyOpener.ISSENT, false);
+
+            newRowValues.put(MyOpener.ISRECEIVED, true);
+
+            //Now insert in the database:
+            long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
+
+            Message msg = new Message(message, newId, false, true);
             list.add(msg);
             typeField.setText(null);
             myAdapter.notifyDataSetChanged();
-           // myList.setAdapter(new MyListAdapter());
+            //myList.setAdapter(new MyListAdapter());
+
+            //Show the id of the inserted item:
+            Toast.makeText(this, "Inserted item id:"+newId, Toast.LENGTH_LONG).show();
+
         });
 
         //myList.setAdapter( myAdapter = new MyListAdapter());
@@ -56,6 +104,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             alertDialogBuilder.setTitle("Do you want to delete this?")
                     .setMessage("The selected row is: " + (position+1) + "\nThe database id is: " + (myAdapter.getItemId(position)+1) )
                     .setPositiveButton("Yes", (click, arg) -> {
+                        deleteMessage(list.get(position));
                         list.remove(position);
                         myAdapter.notifyDataSetChanged();
 //                        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresher);
@@ -73,6 +122,51 @@ public class ChatRoomActivity extends AppCompatActivity {
                     .create().show();
             return true;
         }   );
+
+        String [] columns = {MyOpener.ID, MyOpener.MESSAGE, MyOpener.ISRECEIVED, MyOpener.ISSENT};
+        //query all the results from the database:
+        Cursor results = db.query(false, MyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
+
+        int version = db.getVersion();
+        printCursor(results, version);
+    }
+
+    protected void deleteMessage(Message c)        {
+        db.delete(MyOpener.TABLE_NAME, MyOpener.ID + "= ?", new String[] {Long.toString(c.getId())});
+    }
+
+    private void loadDataFromDatabase()
+    {
+        //get a database connection:
+        MyOpener dbOpener = new MyOpener(this);
+        db = dbOpener.getWritableDatabase(); //This calls onCreate() if you've never built the table before, or onUpgrade if the version here is newer
+
+
+        // We want to get all of the columns. Look at MyOpener.java for the definitions:
+        String [] columns = {MyOpener.ID, MyOpener.MESSAGE, MyOpener.ISRECEIVED, MyOpener.ISSENT};
+        //query all the results from the database:
+        Cursor results = db.query(false, MyOpener.TABLE_NAME, columns, null, null, null, null, null, null);
+
+        //Now the results object has rows of results that match the query.
+        //find the column indices:
+        int idColIndexIndex = results.getColumnIndex(MyOpener.ID);
+        int messageColIndex = results.getColumnIndex(MyOpener.MESSAGE);
+        int isReceivedColIndex = results.getColumnIndex(MyOpener.ISRECEIVED);
+        int isSentColIndex = results.getColumnIndex(MyOpener.ISSENT);
+
+        //iterate over the results, return true if there is a next item:
+        while(results.moveToNext())
+        {
+            String message = results.getString(messageColIndex);
+            long id = results.getLong(idColIndexIndex);
+            boolean isSend = results.getInt(isSentColIndex)!=0;
+            boolean isReceived = results.getInt(isReceivedColIndex)!=0;
+
+            //add the new Contact to the array list:
+            list.add(new Message(message, id, isSend, isReceived));
+        }
+
+        //At this point, the contactsList array has loaded every row from the cursor.
     }
 
     private class MyListAdapter extends BaseAdapter {
@@ -89,7 +183,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             Message msg = (Message)getItem(position);
 
-            if(msg.getType().equals("send")){
+            if(msg.isSend()){
                 View newView = inflater.inflate(R.layout.activity_send, null);
 
                 TextView tView = newView.findViewById(R.id.Textview12);
@@ -108,4 +202,23 @@ public class ChatRoomActivity extends AppCompatActivity {
             }
             //set what the text should be for this row:
         }
-}}
+}
+    private void printCursor(Cursor c, int version){
+        Log.e("ACTIVITY_NAME", "Database version number: " + db.getVersion());
+        Log.e("ACTIVITY_NAME", "Number of columns: " + c.getColumnCount());
+        Log.e("ACTIVITY_NAME", "Name of the columns: ");
+        for(int i=0; i<c.getColumnCount(); i++){
+            Log.e("ACTIVITY_NAME", c.getColumnName(i));
+        }
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            for(int i=0; i<c.getColumnCount(); i++){
+                Log.e("ACTIVITY_NAME", "The result of " + c.getColumnName(i) + " is: " + c.getString(i));
+            }
+            System.out.println("");
+            c.moveToNext();
+        }
+        Log.e("ACTIVITY_NAME", "\nName of the results: " + c.getCount());
+    }
+
+}
