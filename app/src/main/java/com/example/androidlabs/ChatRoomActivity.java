@@ -102,9 +102,9 @@ public class ChatRoomActivity extends AppCompatActivity {
         myList.setOnItemLongClickListener( (parent, view, position, id) -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Do you want to delete this?")
-                    .setMessage("The selected row is: " + (position+1) + "\nThe database id is: " + (myAdapter.getItemId(position)+1) )
+                    .setMessage("The selected row is: " + (position+1) + "\nThe database id is: " + id )
                     .setPositiveButton("Yes", (click, arg) -> {
-                        deleteMessage(list.get(position));
+                        deleteMessage(id);
                         list.remove(position);
                         myAdapter.notifyDataSetChanged();
 //                        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresher);
@@ -131,8 +131,8 @@ public class ChatRoomActivity extends AppCompatActivity {
         printCursor(results, version);
     }
 
-    protected void deleteMessage(Message c)        {
-        db.delete(MyOpener.TABLE_NAME, MyOpener.ID + "= ?", new String[] {Long.toString(c.getId())});
+    protected void deleteMessage(long id)        {
+        db.delete(MyOpener.TABLE_NAME, MyOpener.ID + "= ?", new String[] {Long.toString(id)});
     }
 
     private void loadDataFromDatabase()
@@ -175,7 +175,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         public Object getItem(int position) { return list.get(position); }
 
-        public long getItemId(int position) { return (long) position; }
+        public long getItemId(int position) { return list.get(position).getId(); }
 
         public View getView(int position, View old, ViewGroup parent)
         {
