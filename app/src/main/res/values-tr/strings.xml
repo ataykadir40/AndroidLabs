@@ -33,4 +33,6 @@
     <string name="text12">GÖNDER</string>
     <string name="text13">TESLİM AL</string>
     <string name="hint4">Buraya yazın</string>
+
+    <string name="GoToWeather">Hava Durumuna Git</string>
 </resources>

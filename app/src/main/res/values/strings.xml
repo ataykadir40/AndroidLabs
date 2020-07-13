@@ -34,4 +34,6 @@
     <string name="text13">RECEIVE</string>
     <string name="hint4">Type here</string>
 
+    <string name="GoToWeather">Go to Weather</string>
+
 </resources>

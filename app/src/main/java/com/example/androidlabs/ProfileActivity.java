@@ -38,6 +38,12 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(goToChat);
         });
 
+        Button GoToWeather = findViewById(R.id.GoToWeather);
+        GoToWeather.setOnClickListener(bt -> {
+            Intent Weather = new Intent(ProfileActivity.this, WeatherForecast.class);
+            startActivity(Weather);
+        });
+
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
