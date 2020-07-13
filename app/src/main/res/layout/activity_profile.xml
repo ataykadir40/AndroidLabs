@@ -3,7 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="27dp"
+    android:layout_marginBottom="27dp"
+    android:layout_marginLeft="48dp"
+    android:layout_marginRight="48dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -25,6 +29,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint2"
         android:inputType="textPersonName"
+        android:nextFocusDown="@+id/emailInput2"
         ></EditText>
 
     <TextView
@@ -40,6 +45,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint3"
         android:inputType="textEmailAddress"
+        android:nextFocusDown="@id/pictureBtn"
+        android:nextFocusUp="@+id/pictureBtn"
         ></EditText>
 
     <TextView
@@ -55,6 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@android:drawable/picture_frame"
+        android:nextFocusDown="@+id/emailInput3"
+        android:nextFocusUp="@id/goToChat"
     ></ImageButton>
 
     <TextView
@@ -69,6 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text10"
+        android:nextFocusUp="@+id/goToChat"
         ></Button>
 
     <Button
