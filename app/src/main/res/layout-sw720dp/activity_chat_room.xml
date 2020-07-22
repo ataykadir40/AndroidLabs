@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatRoomActivity">
+
+    <FrameLayout
+        android:id="@+id/fragmentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       android:layout_toRightOf="@+id/theListView" >
+
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/theListView"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/messageLayout"/>
+
+    <LinearLayout
+        android:id="@+id/messageLayout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+
+    <Button
+        android:id="@+id/addButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text12"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"/>
+
+    <EditText
+        android:id="@+id/text11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/addButton3"
+        android:layout_toLeftOf="@id/addButton4"
+        android:layout_weight="1"
+        android:ems="10"
+        android:layout_alignParentBottom="true"
+        android:hint="@string/hint4"
+        ></EditText>
+
+    <Button
+        android:id="@+id/addButton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text13"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

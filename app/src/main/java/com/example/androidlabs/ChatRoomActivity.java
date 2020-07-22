@@ -2,9 +2,11 @@ package com.example.androidlabs;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +26,12 @@ import java.util.ArrayList;
 
 public class ChatRoomActivity extends AppCompatActivity {
 
-    ArrayList<Message> list = new ArrayList<>();
+    public static final String ITEM_SELECTED = "ITEM";
+    public static final String ITEM_POSITION = "POSITION";
+    public static final String ITEM_ISSEND = "ISSEND";
+    public static final String ITEM_ID = "ID";
+
+    ArrayList<Message> msgList = new ArrayList<>();
     private MyListAdapter myAdapter=new MyListAdapter();
     SQLiteDatabase db;
 
@@ -33,8 +41,37 @@ public class ChatRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_room);
 
         ListView myList = findViewById(R.id.theListView);
+        boolean isTablet = findViewById(R.id.fragmentLocation) != null;
+        FrameLayout frameLayout = findViewById(R.id.fragmentLocation);
         loadDataFromDatabase();
         myList.setAdapter(myAdapter);
+
+
+        myList.setOnItemClickListener((list, item, position, id) -> {
+            //Create a bundle to pass data to the new fragment
+            Bundle dataToPass = new Bundle();
+            dataToPass.putString(ITEM_SELECTED, msgList.get(position).getMessage());
+            dataToPass.putInt(ITEM_POSITION, position);
+            dataToPass.putBoolean(ITEM_ISSEND, msgList.get(position).isSend());
+            dataToPass.putLong(ITEM_ID, msgList.get(position).getId());
+
+            if(isTablet)
+            {
+                DetailsFragment dFragment = new DetailsFragment(); //add a DetailFragment
+                dFragment.setTablet(true);
+                dFragment.setArguments( dataToPass ); //pass it a bundle for information
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentLocation, dFragment) //Add the fragment in FrameLayout
+                        .commit(); //actually load the fragment.
+            }
+            else //isPhone
+            {
+                Intent nextActivity = new Intent(ChatRoomActivity.this, EmptyActivity.class);
+                nextActivity.putExtras(dataToPass); //send data to next activity
+                startActivity(nextActivity); //make the transition
+            }
+        });
 
         Button addButton = findViewById(R.id.addButton3);
         addButton.setOnClickListener( click -> {
@@ -58,7 +95,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
 
             Message msg = new Message(message, newId, true, false);
-            list.add(msg);
+            msgList.add(msg);
             typeField.setText(null);
             myAdapter.notifyDataSetChanged();
             //myList.setAdapter(new MyListAdapter());
@@ -88,7 +125,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             long newId = db.insert(MyOpener.TABLE_NAME, null, newRowValues);
 
             Message msg = new Message(message, newId, false, true);
-            list.add(msg);
+            msgList.add(msg);
             typeField.setText(null);
             myAdapter.notifyDataSetChanged();
             //myList.setAdapter(new MyListAdapter());
@@ -104,8 +141,16 @@ public class ChatRoomActivity extends AppCompatActivity {
             alertDialogBuilder.setTitle("Do you want to delete this?")
                     .setMessage("The selected row is: " + (position+1) + "\nThe database id is: " + id )
                     .setPositiveButton("Yes", (click, arg) -> {
+                        if(frameLayout != null) {
+                            for(Fragment fragment : getSupportFragmentManager().getFragments()) {
+                                if(fragment.getArguments().getLong(ITEM_ID)==Long.valueOf(myAdapter.getItemId(position))) {
+                                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                                    break;
+                                }
+                            }
+                        }
                         deleteMessage(id);
-                        list.remove(position);
+                        msgList.remove(position);
                         myAdapter.notifyDataSetChanged();
 //                        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresher);
 //                        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
@@ -163,7 +208,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             boolean isReceived = results.getInt(isReceivedColIndex)!=0;
 
             //add the new Contact to the array list:
-            list.add(new Message(message, id, isSend, isReceived));
+            msgList.add(new Message(message, id, isSend, isReceived));
         }
 
         //At this point, the contactsList array has loaded every row from the cursor.
@@ -171,11 +216,11 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     private class MyListAdapter extends BaseAdapter {
 
-        public int getCount() { return list.size();}
+        public int getCount() { return msgList.size();}
 
-        public Object getItem(int position) { return list.get(position); }
+        public Object getItem(int position) { return msgList.get(position); }
 
-        public long getItemId(int position) { return list.get(position).getId(); }
+        public long getItemId(int position) { return msgList.get(position).getId(); }
 
         public View getView(int position, View old, ViewGroup parent)
         {

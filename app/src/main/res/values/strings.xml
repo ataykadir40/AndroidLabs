@@ -36,4 +36,9 @@
 
     <string name="GoToWeather">Go to Weather</string>
 
+    <string name="MessageHere">Message Here</string>
+    <string name="idText">ID=</string>
+    <string name="fragmentMessageCheckBox">Is a Send Message</string>
+    <string name="hide">HIDE</string>
+
 </resources>
